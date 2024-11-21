@@ -21,13 +21,16 @@ void Start();
 bool Login();
 void CreateStaticStorage();
 
+template <typename Arr>
+void FillStorage(Arr staticArr, Arr dynamicArr, int staticSize);
+
 int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
 	std::cout << "\t\tДошиРай\n\n";
-	void Start();
+	Start();
 	delete[]loginArr;
 	delete[]passArr;
 	delete[]idArr;
@@ -110,7 +113,7 @@ void CreateStaticStorage() {
 	"Дошик с грибами",
 	"Дошик с овощами",
 	"Дошик с сыром",
-	"Дошик с кревветкой",
+	"Дошик с креветкой",
 	"Дошик острый",
 	"Дошик восточный",
 	"Чан рамен с курицей",
@@ -118,4 +121,17 @@ void CreateStaticStorage() {
 	};
 	int tempCount[tempSize]{13, 65, 53, 62, 36, 67, 64, 23, 56, 51};
 	double tempPrice[tempSize]{34.0, 34.0, 40.0, 35.0, 50.0, 60.0, 55.0, 75.0, 90.0, 90.0};
+	FillStorage(tempId, idArr, tempSize);
+	FillStorage(tempName, nameArr, tempSize);
+	FillStorage(tempCount, countArr, tempSize);
+	FillStorage(tempPrice, priceArr, tempSize);
 };
+
+template<typename Arr>
+void FillStorage(Arr staticArr, Arr dynamicArr, int staticSize)
+{
+	for (int i = 0; i < staticSize; i++)
+	{
+		dynamicArr[i] = staticArr[i];
+	}
+}
