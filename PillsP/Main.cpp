@@ -22,7 +22,7 @@ bool Login();
 void CreateStaticStorage();
 
 template <typename Arr>
-void FillStorage(Arr staticArr, Arr dynamicArr, int staticSize);
+void FillStorage(Arr staticArr[], Arr dynamicArr[], int staticSize);
 
 int main()
 {
@@ -49,7 +49,7 @@ void Start() {
 				std::cout << "1 - Использовать готовый склад\n2 - Создать склад\n Ввод: ";
 				std::getline(std::cin, choose, '\n');
 				if (choose == "1") {
-
+					CreateStaticStorage();
 					break;
 				}
 				else if (choose == "2")
@@ -63,9 +63,11 @@ void Start() {
 				}
 			}
 		}
+
+
 		else
 		{
-
+			CreateStaticStorage();
 		}
 	else
 	{
@@ -128,7 +130,7 @@ void CreateStaticStorage() {
 };
 
 template<typename Arr>
-void FillStorage(Arr staticArr, Arr dynamicArr, int staticSize)
+void FillStorage(Arr staticArr[], Arr dynamicArr[], int staticSize)
 {
 	for (int i = 0; i < staticSize; i++)
 	{
