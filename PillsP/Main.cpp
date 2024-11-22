@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <string>
+#include <iomanip>
 
 //АККАУНТЫ
 int userCount = 2;
@@ -19,7 +20,11 @@ double* priceArr = new double[size];
 //ИНИЦИАЛИЗАЦИЯ ФУНКЦИЙ
 void Start();
 bool Login();
+bool IsNumber(std::string string);
 void CreateStaticStorage();
+void ShowAdminMenu();
+void ShowUserMenu();
+void ShowStorage();
 
 template <typename Arr>
 void FillStorage(Arr staticArr[], Arr dynamicArr[], int staticSize);
@@ -62,6 +67,7 @@ void Start() {
 					std::cout << "\n\nВведи нормально...\n\n";
 				}
 			}
+			ShowAdminMenu();
 		}
 
 
@@ -82,8 +88,8 @@ bool Login()
 	{
 		std::cout << "Логин: ";
 		std::getline(std::cin, login, '\n');
-		std::cout << "Логин: ";
-		std::getline(std::cin, login, '\n');
+		std::cout << "Пароль: ";
+		std::getline(std::cin, pass, '\n');
 
 		if (login == loginArr[0] && pass == passArr[0]) {
 			std::cout << "Авторизация: " << loginArr[0] << "\n\n";
@@ -103,6 +109,18 @@ bool Login()
 
 		system("cls");
 		std::cout << "Неверный логин или пароль\n\n";
+	}
+}
+
+bool IsNumber(std::string string)
+{
+	for (int  i = 0; i < string.size(); i++)
+	{
+		if (!std::isdigit(string[i]))
+		{
+			return false;
+		}
+		return true;
 	}
 }
 
@@ -127,7 +145,122 @@ void CreateStaticStorage() {
 	FillStorage(tempName, nameArr, tempSize);
 	FillStorage(tempCount, countArr, tempSize);
 	FillStorage(tempPrice, priceArr, tempSize);
-};
+}
+void ShowStorage()
+{
+	system("cls");
+	std::cout << "\nID\t" << "Название\t\t\t" << "Количество\t" << "Цена\n";
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << idArr[i] << "\t" << std::left << std::setw(30) << nameArr[i] << "\t" << countArr[i] << "\t" << priceArr[i] << "\n";
+	}
+	system("pause");
+
+}
+void ShowAdminMenu()
+{
+	std::string choose;
+	while (true)
+	{
+		system("cls");
+		std::cout << "1 - Начать продажу\n";
+		std::cout << "2 - Показать склад\n";
+		std::cout << "3 - Пополнить склад\n";
+		std::cout << "4 - Списать со склада\n";
+		std::cout << "5 - Изменить цену\n";
+		std::cout << "6 - Изменить склад\n";
+		std::cout << "7 - Изменить сотрудников\n";
+		std::cout << "8 - Отчёт о прибыли\n";
+		std::cout << "0 - Закрыть смену\n";
+		std::cout << "\nВвод:";
+		std::getline(std::cin, choose, '\n');
+		if (choose == "1") {
+
+		}
+		else if (choose == "2")
+		{
+			ShowStorage();
+		}
+		else if (choose == "3")
+		{
+
+		}
+		else if (choose == "4")
+		{
+
+		}
+		else if (choose == "5")
+		{
+
+		}
+		else if (choose == "6")
+		{
+
+		}
+		else if (choose == "7")
+		{
+
+		}
+		else if (choose == "8")
+		{
+
+		}
+		else if (choose == "0")
+		{
+
+		}
+		else
+		{
+			std::cout << "\nОшибка ввода\n";
+			Sleep(500);
+		}
+	}
+}
+
+void ShowUserMenu() {
+	std::string choose;
+
+	while (true)
+	{
+		std::cout << "1 - Начать продажу\n";
+		std::cout << "2 - Показать склад\n";
+		std::cout << "3 - Пополнить склад\n";
+		std::cout << "4 - Списать со склада\n";
+		std::cout << "5 - Отчёт о прибыли\n";
+		std::cout << "0 - Закрыть смену\n";
+		std::cout << "\nВвод:";
+		std::getline(std::cin, choose, '\n');
+		if (choose == "1") {
+
+		}
+		else if (choose == "2")
+		{
+			ShowStorage();
+		}
+		else if (choose == "3")
+		{
+
+		}
+		else if (choose == "4")
+		{
+
+		}
+		else if (choose == "5")
+		{
+
+		}
+		else if (choose == "0")
+		{
+
+		}
+		else
+		{
+			std::cout << "\nОшибка ввода\n";
+			Sleep(500);
+		}
+	}
+}
+
 
 template<typename Arr>
 void FillStorage(Arr staticArr[], Arr dynamicArr[], int staticSize)
