@@ -24,11 +24,16 @@ bool IsNumber(std::string string);
 void CreateStaticStorage();
 void ShowAdminMenu();
 void ShowUserMenu();
-void ShowStorage();
+void ShowStorage(int mode = 0);
+void RefillProducts();
+int GetID();
+
+void Getline(std::string& stringName);
 
 template <typename Arr>
 void FillStorage(Arr staticArr[], Arr dynamicArr[], int staticSize);
 
+//-----MAIN-----
 int main()
 {
 	SetConsoleCP(1251);
@@ -44,6 +49,8 @@ int main()
 	delete[]priceArr;
 
 }
+//-----MAIN-----
+
 //ФУНКЦИИ
 void Start() {
 	if (Login() == true)
@@ -52,7 +59,7 @@ void Start() {
 			while (true)
 			{
 				std::cout << "1 - Использовать готовый склад\n2 - Создать склад\n Ввод: ";
-				std::getline(std::cin, choose, '\n');
+				Getline(choose);
 				if (choose == "1") {
 					CreateStaticStorage();
 					break;
@@ -87,9 +94,9 @@ bool Login()
 	while (true)
 	{
 		std::cout << "Логин: ";
-		std::getline(std::cin, login, '\n');
+		Getline(login);
 		std::cout << "Пароль: ";
-		std::getline(std::cin, pass, '\n');
+		Getline(pass);
 
 		if (login == loginArr[0] && pass == passArr[0]) {
 			std::cout << "Авторизация: " << loginArr[0] << "\n\n";
@@ -146,17 +153,110 @@ void CreateStaticStorage() {
 	FillStorage(tempCount, countArr, tempSize);
 	FillStorage(tempPrice, priceArr, tempSize);
 }
-void ShowStorage()
+void ShowStorage(int mode)
 {
 	system("cls");
-	std::cout << "\nID\t" << "Название\t\t\t" << "Количество\t" << "Цена\n";
-	for (int i = 0; i < size; i++)
+	if (mode == 0)
 	{
-		std::cout << idArr[i] << "\t" << std::left << std::setw(30) << nameArr[i] << "\t" << countArr[i] << "\t" << priceArr[i] << "\n";
+		std::cout << "\nID\t" << "Название\t\t\t" << "Количество\t" << "Цена\n";
+		for (int i = 0; i < size; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(30) << nameArr[i] << "\t" << countArr[i] << "\t" << priceArr[i] << "\n";
+		}
+	}
+	else if (mode == 1)
+	{
+		std::cout << "\nID\t" << "Название\t\t\t" << "Количество\t" << "\n";
+		for (int i = 0; i < size; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(30) << nameArr[i] << "\t" << countArr[i] << "\t" << "\n";
+		}
+	}
+	else if (mode == 2)
+	{
+		std::cout << "\nID\t" << "Название\t\t\t" << "Цена\n";
+		for (int i = 0; i < size; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(30) << nameArr[i] << "\t" << "\t" << priceArr[i] << "\n";
+		}
+	}
+	else
+	{
+		std::cerr << "\nMenuModeError\n";
 	}
 	system("pause");
 
 }
+void RefillProducts()
+{
+	std::string choose, chooseCount;
+	int id = 0, count;
+
+	while (true)
+	{
+		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
+		Getline(choose);
+		if (choose == "1")
+		{
+			ShowStorage(1);
+			id = GetID();
+			while (true)
+			{
+			std::cout << "Количество товара для пополнения: ";
+			Getline(chooseCount);
+			if (IsNumber(chooseCount)) {
+				count = std::stoi(chooseCount);
+				if (count > 0 && count <= 1000) {
+				
+				}
+				else
+				{
+					std::cout << "\nНекорректное ID\n";
+				}
+			}
+			else
+			{
+				std::cout << "Ошибка, дон";
+			}
+			}
+			
+		}
+		else if (choose == "0")
+		{
+
+		}
+
+
+	}
+}
+
+int GetID()
+{
+	std::string stringID;
+	int result{};
+	std::cout << "Введите ID товара: ";
+	Getline(stringID);
+	if (IsNumber(stringID)) {
+		result = std::stoi(stringID);
+		if (result > 0 && result <= size) {
+			return result;
+		}
+		else
+		{
+			std::cout << "\nНекорректное ID\n";
+		}
+	}
+	else
+	{
+		std::cout << "Ошибка, дон";
+	}
+}
+
+void Getline(std::string& stringName)
+{
+	std::getline(std::cin, stringName, '\n');
+}
+
 void ShowAdminMenu()
 {
 	std::string choose;
@@ -183,7 +283,7 @@ void ShowAdminMenu()
 		}
 		else if (choose == "3")
 		{
-
+			RefillProducts();
 		}
 		else if (choose == "4")
 		{
@@ -239,7 +339,7 @@ void ShowUserMenu() {
 		}
 		else if (choose == "3")
 		{
-
+			RefillProducts();
 		}
 		else if (choose == "4")
 		{
