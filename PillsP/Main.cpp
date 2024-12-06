@@ -17,6 +17,19 @@ std::string* nameArr = new std::string[size];
 int* countArr = new int[size];
 double* priceArr = new double[size];
 
+//КАССА
+double cash = 2000;
+double cashMoney{};
+double webMoney{};
+
+//ЧЕК
+int checkSize = 1;
+std::string* nameCheckArr = new std::string[checkSize];
+int* countCheckArr = new int[checkSize];
+double* priceCheckArr = new double[checkSize];
+double* totalPriceCheckArr = new double[checkSize];
+
+
 //ИНИЦИАЛИЗАЦИЯ ФУНКЦИЙ
 void Start();
 bool Login();
@@ -30,7 +43,7 @@ void RemoveProducts();
 void ChangeStorage();
 void ChangeEmployee();
 void ChangePrice();
-int GetID(int mode);
+int GetID(int mode = 0);
 
 void AddNewProduct();
 void EditProduct();
@@ -39,6 +52,9 @@ void DeleteProduct();
 void AddNewEmployee();
 void EditEmployee();
 void DeleteEmployee();
+
+void Selling();
+void AddNewCheckSize();
 
 void Getline(std::string& stringName);
 
@@ -59,6 +75,10 @@ int main()
 	delete[]nameArr;
 	delete[]countArr;
 	delete[]priceArr;
+	delete[]totalPriceCheckArr;
+	delete[]countCheckArr;
+	delete[]countCheckArr;
+	delete[]priceCheckArr;
 
 }
 //-----MAIN-----
@@ -212,6 +232,7 @@ void RefillProducts()
 	while (true)
 	{
 		system("cls");
+		std::cout << "Пополнение склада\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -258,6 +279,7 @@ void RemoveProducts()
 	while (true)
 	{
 		system("cls");
+		std::cout << "Списание товара\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -302,6 +324,7 @@ void AddNewProduct() {
 	while (true)
 	{
 		system("cls");
+		std::cout << "Добавление нового товара\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -415,7 +438,6 @@ void AddNewProduct() {
 			std::cout << "\nОшибка дон\n";
 		}
 	}
-
 }
 void EditProduct()
 {
@@ -424,7 +446,7 @@ void EditProduct()
 
 	while (true) {
 		system("cls");
-		std::cout << "Редактирование продукта\n";
+		std::cout << "Редактирование товара\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -466,6 +488,7 @@ void DeleteProduct()
 	while (true)
 	{
 		system("cls");
+		std::cout << "Удаление товара\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -549,6 +572,7 @@ void AddNewEmployee()
 	while (true)
 	{
 		system("cls");
+		std::cout << "Добавление нового сотрудника\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -632,7 +656,7 @@ void EditEmployee()
 
 	while (true) {
 		system("cls");
-		std::cout << "Редактирование продукта\n";
+		std::cout << "Редактирование данных сотрудника\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
@@ -679,6 +703,7 @@ void DeleteEmployee()
 	while (true)
 	{
 		system("cls");
+		std::cout << "Удаление сотрудников\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 
@@ -718,11 +743,11 @@ void DeleteEmployee()
 			loginArr[0] = tempLogin[0];
 			passArr[0] = tempPass[0];
 
-			for (int i = 1, j = 1; i < size, j < userCount; i++, j++)
+			for (int i = 1, j = 1; i < userCount, j < userCount + 1; i++, j++)
 			{
 				if (j == id)
 				{
-					if (id == size + 1)
+					if (id == userCount)
 					{
 						break;
 					}
@@ -739,7 +764,7 @@ void DeleteEmployee()
 
 
 
-			std::cout << "Пользователь успешно удалён";
+			std::cout << "Сотрудник успешно удалён";
 
 			delete[] tempLogin;
 			delete[] tempPass;
@@ -757,6 +782,150 @@ void DeleteEmployee()
 	}
 
 }
+void Selling()
+{
+	std::string choose, chooseID, chooseCount;
+	bool isFirst = true;
+	int id{}, count;
+	while (true)
+	{
+		system("cls");
+		std::cout << "1 - Начать новую продажу\n0 - Отмена\n\nВвод: ";
+		Getline(choose);
+		if (choose == "1")
+		{
+			delete[]totalPriceCheckArr;
+			delete[]countCheckArr;
+			delete[]countCheckArr;
+			delete[]priceCheckArr;
+
+			checkSize = 1;
+
+			totalPriceCheckArr = new double[size];
+			countCheckArr = new int[size];
+			priceCheckArr = new double[size];
+			nameCheckArr = new std::string[size];
+
+			while (true)
+			{
+				system("cls");
+				ShowStorage();
+				std::cout << "Введите ID товара или\"exit\" для завершения покупок\n\nВвод: ";
+				Getline(chooseID);
+				if (chooseID == "exit")
+				{
+					break;
+				}
+				else if (IsNumber(chooseID))
+				{
+					id = std::stoi(chooseID);
+					if (id > 0 && id <= size)
+					{
+						std::cout << "Введите кол-во " << nameArr[id - 1] << " для покупки: ";
+						Getline(chooseCount);
+						if (IsNumber(chooseCount))
+						{
+							count = std::stoi(chooseCount);
+							if (count >= 0 && count <= countArr[id - 1])
+							{
+								if (isFirst)
+								{
+									nameCheckArr[checkSize - 1] = nameArr[id - 1];
+									countCheckArr[checkSize - 1] = count;
+									priceCheckArr[checkSize - 1] = priceArr[id - 1];
+									totalPriceCheckArr[checkSize - 1] = count * priceArr[id - 1];
+									isFirst = false;
+								}
+								else
+								{
+									AddNewCheckSize();
+									nameCheckArr[checkSize - 1] = nameArr[id - 1];
+									countCheckArr[checkSize - 1] = count;
+									priceCheckArr[checkSize - 1] = priceArr[id - 1];
+									totalPriceCheckArr[checkSize - 1] = count * priceArr[id - 1];
+								}
+							}
+							else
+							{
+								std::cout << "\nОшибка кол-во\n";
+								Sleep(1000);
+							}
+						}
+						else
+						{
+							std::cout << "\nОшибка ввода\n";
+							Sleep(1000);
+						}
+					}
+					else
+					{
+						std::cout << "\nОшибка ID\n";
+						Sleep(1000);
+					}
+				}
+				else
+				{
+					std::cout << "\nОшибка ввода\n";
+					Sleep(1000);
+				}
+			}
+			if (!isFirst)
+			{
+				//принт чека
+			}
+		}
+		else if (choose == "0")
+		{
+			break;
+		}
+		else
+		{
+			std::cout << "\nОшибка ввода\n";
+			Sleep(800);
+		}
+	}
+}
+void AddNewCheckSize()
+{
+	int* tempCount = new int[checkSize];
+	double* tempTotalPrice = new double[checkSize];
+	double* tempPrice = new double[checkSize];
+	std::string* tempName = new std::string[checkSize];
+
+	for (int i = 0; i < checkSize; i++)
+	{
+		tempTotalPrice[i] = totalPriceCheckArr[i];
+		tempCount[i] = countCheckArr[i];
+		tempPrice[i] = priceCheckArr[i];
+		tempName[i] = nameCheckArr[i];
+	}
+
+	delete[]totalPriceCheckArr;
+	delete[]nameCheckArr;
+	delete[]countCheckArr;
+	delete[]priceCheckArr;
+
+	checkSize++;
+
+	totalPriceCheckArr = new double[checkSize];
+	countCheckArr = new int[checkSize];
+	priceCheckArr = new double[checkSize];
+	nameCheckArr = new std::string[checkSize];
+
+	for (int i = 0; i < checkSize - 1; i++)
+	{
+		totalPriceCheckArr[i] = tempTotalPrice[i];
+		countCheckArr[i] = tempCount[i];
+		priceCheckArr[i] = tempPrice[i];
+		nameCheckArr[i] = tempName[i];
+	}
+
+	delete[] totalPriceCheckArr;
+	delete[] tempCount;
+	delete[] tempPrice;
+	delete[] tempName;
+
+}
 void ChangePrice()
 		{
 			std::string choose, choosePrice;
@@ -766,6 +935,7 @@ void ChangePrice()
 			while (true)
 			{
 				system("cls");
+				std::cout << "Изменение цены\n\n";
 				std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 				Getline(choose);
 				if (choose == "1")
@@ -811,6 +981,7 @@ void ChangeStorage() {
 			while (true)
 			{
 				system("cls");
+				std::cout << "Изменение склада\n\n";
 				std::cout << "1 - Добавить новый товар\n2 - Редактировать название\n3 - Удалить товар\n0 - Отмена\n\nВвод: ";
 				Getline(choose);
 				if (choose == "1")
@@ -839,6 +1010,7 @@ void ChangeEmployee()
 			while (true)
 			{
 				system("cls");
+				std::cout << "Изменение сотрудников\n\n";
 				std::cout << "1 - Добавить нового сотрудника\n2 - Редактировать сотрудника\n3 - Удалить сотрудника\n0 - Отмена\n\nВвод: ";
 				Getline(choose);
 				if (choose == "1")
