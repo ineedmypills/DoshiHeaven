@@ -1,3 +1,6 @@
+//MIT License
+//Copyright(c) 2024 ineedmypills
+
 #include <iostream>
 #include <Windows.h>
 #include <cstdlib>
