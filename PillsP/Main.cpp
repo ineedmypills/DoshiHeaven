@@ -39,6 +39,7 @@ void Start();
 bool Login();
 bool IsNumber(std::string string);
 void CreateStaticStorage();
+void CreateDynamicStorage();
 void ShowAdminMenu();
 void ShowUserMenu();
 void ShowStorage(int mode = 0);
@@ -107,7 +108,7 @@ void Start() {
 				}
 				else if (choose == "2")
 				{
-
+					CreateDynamicStorage();
 					break;
 				}
 				else
@@ -191,6 +192,132 @@ void CreateStaticStorage() {
 	FillStorage(tempCount, countArr, tempSize);
 	FillStorage(tempPrice, priceArr, tempSize);
 }
+
+void CreateDynamicStorage()
+{
+	size = 0;
+	std::string choose, nameStr, priceStr, countStr;
+	int id = 0, count;
+	while (true)
+	{
+		system("cls");
+		std::cout << "Добавление товара\n\n";
+		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
+		Getline(choose);
+		if (choose == "1")
+		{
+			int* tempID = new int[size];
+			int* tempCount = new int[size];
+			double* tempPrice = new double[size];
+			std::string* tempName = new std::string[size];
+
+			for (int i = 0; i < size; i++)
+			{
+				tempID[i] = idArr[i];
+				tempCount[i] = countArr[i];
+				tempPrice[i] = priceArr[i];
+				tempName[i] = nameArr[i];
+			}
+
+			delete[]idArr;
+			delete[]nameArr;
+			delete[]countArr;
+			delete[]priceArr;
+
+			size++;
+
+			idArr = new int[size];
+			countArr = new int[size];
+			priceArr = new double[size];
+			nameArr = new std::string[size];
+
+			for (int i = 0; i < size - 1; i++)
+			{
+				idArr[i] = tempID[i];
+				countArr[i] = tempCount[i];
+				priceArr[i] = tempPrice[i];
+				nameArr[i] = tempName[i];
+			}
+
+			while (true)
+			{
+				std::cout << "Введите название нового товара: ";
+				Getline(nameStr);
+				if (nameStr.size() > 2 && nameStr.size() <= 60)
+				{
+					nameArr[size - 1] = nameStr;
+					break;
+				}
+				else
+				{
+					std::cout << "\nОшибка дон! От 3 до 60 символов!\n";
+				}
+			}
+
+			while (true)
+			{
+				std::cout << "Количество нового товара: ";
+				Getline(countStr);
+				if (IsNumber(countStr))
+				{
+					if (std::stoi(countStr) >= 0 && std::stoi(countStr) <= 1000) {
+						countArr[size - 1] = std::stoi(countStr);
+						break;
+					}
+					else {
+						std::cout << "\nОшибка ввода\n";
+					}
+				}
+				else
+				{
+					std::cout << "\nОшибка ввода\n";
+				}
+			}
+
+			while (true)
+			{
+				std::cout << "Цена нового товара: ";
+				Getline(priceStr);
+				if (IsNumber(priceStr))
+				{
+					if (std::stod(priceStr) >= 0 && std::stod(priceStr) <= 10000.0) {
+						priceStr[size - 1] = std::stoi(priceStr);
+						break;
+					}
+					else {
+						std::cout << "\nОшибка ввода\n";
+					}
+				}
+				else
+				{
+					std::cout << "\nОшибка ввода\n";
+				}
+			}
+
+			idArr[size - 1] = size;
+
+			std::cout << idArr[size - 1] << "\t" << std::left << std::setw(30) << nameArr[size - 1] << "\t" << countArr[size - 1] << "\t" << "\t" << priceArr[size - 1] << "\n\n";
+			std::cout << "Новый товар успешно добален";
+
+			delete[] tempID;
+			delete[] tempCount;
+			delete[] tempPrice;
+			delete[] tempName;
+
+			Sleep(3000);
+		}
+		else if (choose == "0")
+		{
+			break;
+		}
+		else
+		{
+			std::cout << "\nОшибка дон\n";
+		}
+	}
+
+}
+
 void ShowStorage(int mode)
 {
 	system("cls");
@@ -333,7 +460,7 @@ void AddNewProduct() {
 	while (true)
 	{
 		system("cls");
-		std::cout << "Добавление нового товара\n\n";
+		std::cout << "Добавление товара\n\n";
 		std::cout << "1 - Начать\n0 - Отмена\n\nВвод: ";
 		Getline(choose);
 		if (choose == "1")
